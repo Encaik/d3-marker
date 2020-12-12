@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+    <title>Document</title>
+    <style>
+      html,
+      body {
+        padding: 0;
+        margin: 0;
+        height: 100%;
+        width: 100%;
+        overflow: hidden;
+        position: absolute;
+      }
+      .main {
+        box-sizing: border-box;
+        height: 100%;
+        width: 100%;
+        padding: 5% 0;
+        display: flex;
+      }
+      .img {
+        margin: auto;
+        height: 100%;
+      }
+      img {
+        height: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="main">
+      <div class="img" id="img">
+        <img
+          src="https://goss.veer.com/creative/vcg/veer/1600water/veer-137737242.jpg"
+        />
+      </div>
+    </div>
+    <script src="./index.js"></script>
+    <script>
+      var d3m = new D3M("img", {
+        scroll: { max: 2.5 },
+        hover: true,
+        defRectStyle: {
+          group: "rect",
+          width: 120,
+          height: 80,
+          fill: "transparent",
+          stroke: "red",
+        },
+      });
+      let rect = d3m.group({ id: "rect" });
+      let text = d3m.group();
+      var data = [
+        {
+          type: "text",
+          group: text,
+          x: 512,
+          y: 465,
+        },
+        {
+          type: "rect",
+          group: rect,
+          x: 512,
+          y: 223,
+          width: 111,
+          height: 222,
+          fill: "transparent",
+          stroke: "red",
+          id: "lalala",
+        },
+      ];
+      d3m.readData(data);
+      d3m.openDraw("rect", function (obj) {
+        console.log(obj);
+        return false;
+      });
+      //d3m.removeHtml("lalala");
+    </script>
+  </body>
+</html>
