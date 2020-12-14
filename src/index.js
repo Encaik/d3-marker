@@ -83,6 +83,10 @@ class D3M {
     });
   }
 
+  /**
+   * 获取所有元素数据
+   * @param {svgObj} obj
+   */
   getData(obj) {
     if (typeof obj !== "undefined") {
       let id = obj._groups[0][0].id;
@@ -100,6 +104,10 @@ class D3M {
 
   //----------------------------创建图形----------------------------
 
+  /**
+   * 创建管理组
+   * @param {*} options
+   */
   group(options) {
     let group = this.svg.append("g");
     if (options) {
@@ -110,7 +118,7 @@ class D3M {
   }
 
   /**
-   *
+   * 创建矩形
    * @param {object} options
    */
   rect(options) {
@@ -197,6 +205,10 @@ class D3M {
     return obj;
   }
 
+  /**
+   * 创建文字
+   * @param {*} options
+   */
   text(options) {
     options.group =
       typeof options.group === "undefined"
@@ -253,6 +265,11 @@ class D3M {
     return obj;
   }
 
+  /**
+   * 通过对象更新对象数据
+   * @param {*} obj
+   * @param {*} attr
+   */
   update(obj, attr) {
     let id = obj._groups[0][0].id;
     let datas = {};
@@ -267,6 +284,11 @@ class D3M {
     });
   }
 
+  /**
+   * 通过id更新对象数据
+   * @param {*} id
+   * @param {*} attr
+   */
   updateHtml(id, attr) {
     let $el = document.getElementById(id);
     Object.keys(attr).forEach((i) => {
@@ -291,6 +313,10 @@ class D3M {
     });
   }
 
+  /**
+   * 通过对象移除对象
+   * @param {*} obj
+   */
   remove(obj) {
     let id = obj._groups[0][0].id;
     let tagName = obj._groups[0][0].tagName;
@@ -304,6 +330,10 @@ class D3M {
     });
   }
 
+  /**
+   * 通过id移除对象
+   * @param {*} id
+   */
   removeHtml(id) {
     let $el = document.getElementById(id);
     d3.select(`#${id}`).remove();
@@ -367,6 +397,11 @@ class D3M {
 
   //----------------------------绘制工具----------------------------
 
+  /**
+   * 开始绘制
+   * @param {*} type
+   * @param {*} callback
+   */
   openDraw(type, callback) {
     switch (type) {
       case "rect":
@@ -380,6 +415,9 @@ class D3M {
     this.$svg.addEventListener("mouseup", this._onMouseupDrawBind);
   }
 
+  /**
+   * 结束绘制
+   */
   closeDraw() {
     this.$svg.removeEventListener("mousedown", this._onMousedownDrawBind);
     this.$svg.removeEventListener("mouseup", this._onMouseupDrawBind);
@@ -423,6 +461,10 @@ class D3M {
   }
 
   //----------------------------hover监听----------------------------
+
+  /**
+   * 添加hover样式
+   */
   addHover() {
     this._isHover = true;
     this.data.rect.forEach((i) => {
@@ -430,6 +472,9 @@ class D3M {
     });
   }
 
+  /**
+   * 移除hover样式
+   */
   removeHover() {
     this._isHover = false;
     this.data.rect.forEach((i) => {
@@ -439,6 +484,12 @@ class D3M {
     });
   }
 
+  /**
+   * 设置hover监听
+   * @param {*} data
+   * @param {*} defStyle
+   * @param {*} hoverStyle
+   */
   setHover(data, defStyle, hoverStyle) {
     let $el = document.getElementById(data.id);
     data._hoverStyle = () => {
@@ -452,10 +503,21 @@ class D3M {
   }
 
   //----------------------------监听方法----------------------------
+
+  /**
+   * 启用监听
+   * @param {*} type
+   * @param {*} callback
+   */
   on(type, callback) {
     this.$svg.addEventListener(type, callback);
   }
 
+  /**
+   * 停用监听
+   * @param {*} type
+   * @param {*} callback
+   */
   off(type, callback) {
     this.$svg.removeEventListener(type, callback);
   }
