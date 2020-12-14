@@ -10,8 +10,8 @@ class D3M {
       return;
     }
     if (id && typeof id === "string") {
-      this.createSVG(id);
       if (options) {
+        options.img ? this.createSVG(id, options.img) : null;
         options.scroll ? this.addScroll(options.scroll) : null;
         this._isHover = options.hover ? true : false;
         options.defRectStyle
@@ -27,13 +27,14 @@ class D3M {
    * 根据Id创建SVG标签
    * @param {string} id
    */
-  createSVG(id) {
+  createSVG(id, options) {
     if (!id) {
       console.error("D3M:未填写创建标签Id。");
       return;
     }
     this.id = id;
     this.$el = document.getElementById(id);
+    this.$el.innerHTML = `<img src="${options.src}" width="${options.width}" height="${options.height}"/>`;
     let ctx = d3.select(`#${id}`).style("position", "relative");
     this.$img = document.querySelector(`#${id} img`);
     this.svg = ctx
