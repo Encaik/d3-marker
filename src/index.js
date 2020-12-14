@@ -415,6 +415,22 @@ class D3M {
     this._onScrollBind = null;
   }
 
+  setScroll(scale) {
+    if (scale > this.scrollMax || scale < this.scrollMin) {
+      console.warn("D3M:请设置允许缩放范围内的正确比例。");
+      return;
+    }
+    this.scrollScale = scale;
+    this.$img.style.transform = `scale(${scale})`;
+    this.$img.style.transformOrigin = `${this.$el.width / 2}px ${
+      this.$el.height / 2
+    }px`;
+    this.$svg.style.transform = `scale(${scale})`;
+    this.$svg.style.transformOrigin = `${this.$el.width / 2}px ${
+      this.$el.height / 2
+    }px`;
+  }
+
   /**
    * 滚轮绑定事件
    * @param {$event} e
@@ -424,13 +440,12 @@ class D3M {
       this.scrollScale = this.scrollScale + 0.1;
     } else if (e.deltaY > 0 && this.scrollScale - 0.1 >= this.scrollMin) {
       this.scrollScale = this.scrollScale - 0.1;
+    } else {
+      return;
     }
-    document.getElementsByTagName(
-      "img",
-    )[0].style.transform = `scale(${this.scrollScale})`;
-    document.getElementsByTagName(
-      "img",
-    )[0].style.transformOrigin = `${e.offsetX}px ${e.offsetY}px`;
+    console.log(e.offsetX, e.offsetY);
+    this.$img.style.transform = `scale(${this.scrollScale})`;
+    this.$img.style.transformOrigin = `${e.offsetX}px ${e.offsetY}px`;
     this.$svg.style.transform = `scale(${this.scrollScale})`;
     this.$svg.style.transformOrigin = `${e.offsetX}px ${e.offsetY}px`;
   }
