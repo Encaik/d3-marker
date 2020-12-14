@@ -32,6 +32,9 @@ class D3M {
       console.error("D3M:未填写创建标签Id。");
       return;
     }
+    if (document.querySelector(`#${id} svg`)) {
+      return;
+    }
     this.id = id;
     this.$el = document.getElementById(id);
     this.$el.innerHTML = `<img src="${options.src}" width="${options.width}" height="${options.height}"/>`;
