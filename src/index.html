@@ -78,6 +78,19 @@
         console.log(obj);
         return true;
       });
+      d3m.removeHtml("lalala");
+      let lilili = d3m.rect({
+        type: "rect",
+        x: 612,
+        y: 523,
+        width: 111,
+        height: 222,
+        fill: "transparent",
+        stroke: "red",
+        id: "lilili",
+      });
+      d3m.update(lilili, { fill: "pink" });
+      console.log(d3m.getData());
     </script>
   </body>
 </html>

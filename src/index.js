@@ -84,7 +84,7 @@ class D3M {
   }
 
   getData(obj) {
-    if (obj) {
+    if (typeof obj !== "undefined") {
       let id = obj._groups[0][0].id;
       for (let i of Object.keys(this.data)) {
         for (let d of this.data[i]) {
@@ -232,8 +232,18 @@ class D3M {
   }
 
   update(obj, attr) {
+    let id = obj._groups[0][0].id;
     Object.keys(attr).forEach((i) => {
       obj.attr(i, attr[i]);
+    });
+    Object.keys(this.data).forEach((i) => {
+      for (let d of this.data[i]) {
+        if (d.id === id) {
+          Object.keys(attr).forEach((i) => {
+            d[i] = attr[i];
+          });
+        }
+      }
     });
   }
 
@@ -242,15 +252,32 @@ class D3M {
     Object.keys(attr).forEach((i) => {
       $el.setAttribute(i, attr[i]);
     });
+    Object.keys(this.data).forEach((i) => {
+      for (let d of this.data[i]) {
+        if (d.id === id) {
+          Object.keys(attr).forEach((i) => {
+            d[i] = attr[i];
+          });
+        }
+      }
+    });
   }
 
   remove(obj) {
-    //TODO:同步删除数据
+    let id = obj._groups[0][0].id;
     obj.remove();
+    Object.keys(this.data).forEach((i) => {
+      let temp = this.data[i].filter((e) => e.id !== id);
+      this.data[i] = temp;
+    });
   }
 
   removeHtml(id) {
     d3.select(`#${id}`).remove();
+    Object.keys(this.data).forEach((i) => {
+      let temp = this.data[i].filter((e) => e.id !== id);
+      this.data[i] = temp;
+    });
   }
 
   //----------------------------滚轮缩放----------------------------
@@ -386,6 +413,15 @@ class D3M {
     };
     $el.addEventListener("mouseover", data._hoverStyle);
     $el.addEventListener("mouseleave", data._defStyle);
+  }
+
+  //----------------------------监听方法----------------------------
+  on(type, callback) {
+    this.$svg.addEventListener(type, callback);
+  }
+
+  off(type, callback) {
+    this.$svg.removeEventListener(type, callback);
   }
 }
 
