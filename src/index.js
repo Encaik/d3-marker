@@ -33,6 +33,7 @@ class D3M {
       return;
     }
     if (document.querySelector(`#${id} svg`)) {
+      console.warn("D3M:已经在标签内创建过画布，请先移除后再创建。");
       return;
     }
     this.id = id;
@@ -57,6 +58,12 @@ class D3M {
       text: [],
     };
     return this.svg;
+  }
+
+  destorySVG(id) {
+    document
+      .getElementById(id)
+      .removeChild(document.querySelector(`#${id} svg`));
   }
 
   //----------------------------数据渲染----------------------------
