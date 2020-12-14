@@ -280,6 +280,15 @@ class D3M {
     });
     let data = datas[id];
     Object.keys(attr).forEach((i) => {
+      if (
+        data.type === "text" &&
+        (i === "background" || i === "backgroundWidth")
+      ) {
+        let $bg = document.getElementById(`${data.id}-background`);
+        $bg.setAttribute(i, attr[i]);
+      } else {
+        obj.attr(i, attr[i]);
+      }
       data[i] = attr[i];
     });
   }
@@ -443,6 +452,7 @@ class D3M {
   }
 
   _onDraw(e) {
+    console.log(e);
     this.endX = e.offsetX;
     this.endY = e.offsetY;
     if (!this.drawObj) {
