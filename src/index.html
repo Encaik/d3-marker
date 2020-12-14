@@ -60,6 +60,7 @@
           group: text,
           x: 512,
           y: 465,
+          background: "rgba(0,0,0,0.5)",
         },
         {
           type: "rect",
@@ -78,7 +79,7 @@
         console.log(obj);
         return true;
       });
-      d3m.removeHtml("lalala");
+      d3m.removeHtml("text1");
       let lilili = d3m.rect({
         type: "rect",
         x: 612,
@@ -89,8 +90,6 @@
         stroke: "red",
         id: "lilili",
       });
-      d3m.update(lilili, { fill: "pink" });
-      console.log(d3m.getData());
     </script>
   </body>
 </html>

@@ -212,45 +212,73 @@ class D3M {
           ? this.defTextStyle.fill
           : "rgb(0,0,0)"
         : options.fill;
-    this.count.text++;
-    options.id =
-      typeof options.id === "undefined" ? `text${this.count.text}` : options.id;
     options.text =
       typeof options.text === "undefined"
         ? `text${this.count.text}`
         : options.text;
+    options.background =
+      typeof options.background === "undefined"
+        ? this.defTextStyle && this.defTextStyle.background
+          ? this.defTextStyle.background
+          : null
+        : options.background;
+    options.backgroundWidth =
+      typeof options.backgroundWidth === "undefined"
+        ? this.defTextStyle && this.defTextStyle.backgroundWidth
+          ? this.defTextStyle.backgroundWidth
+          : options.text.length * 15
+        : options.backgroundWidth;
+    this.count.text++;
+    options.id =
+      typeof options.id === "undefined" ? `text${this.count.text}` : options.id;
     let obj = options.group
       .append("text")
       .text(options.text)
-      .attr("x", options.x)
-      .attr("y", options.y)
+      .attr("x", options.x + 5)
+      .attr("y", options.y + 17)
       .attr("fill", options.fill)
       .attr("id", options.id)
       .style("user-select", "none");
+    if (options.background) {
+      options.group
+        .append("rect")
+        .attr("x", options.x)
+        .attr("y", options.y)
+        .attr("width", options.backgroundWidth)
+        .attr("height", 23)
+        .attr("fill", options.background)
+        .attr("id", `${options.id}-background`);
+    }
     this.data.text.push(options);
     return obj;
   }
 
   update(obj, attr) {
     let id = obj._groups[0][0].id;
-    Object.keys(attr).forEach((i) => {
-      obj.attr(i, attr[i]);
-    });
+    let datas = {};
     Object.keys(this.data).forEach((i) => {
-      for (let d of this.data[i]) {
-        if (d.id === id) {
-          Object.keys(attr).forEach((i) => {
-            d[i] = attr[i];
-          });
-        }
-      }
+      this.data[i].forEach((d) => {
+        datas[d.id] = d;
+      });
+    });
+    let data = datas[id];
+    Object.keys(attr).forEach((i) => {
+      data[i] = attr[i];
     });
   }
 
   updateHtml(id, attr) {
     let $el = document.getElementById(id);
     Object.keys(attr).forEach((i) => {
-      $el.setAttribute(i, attr[i]);
+      if (
+        $el.tagName === "text" &&
+        (i === "background" || i === "backgroundWidth")
+      ) {
+        let $bg = document.getElementById(`${data.id}-background`);
+        $bg.setAttribute(i, attr[i]);
+      } else {
+        $el.setAttribute(i, attr[i]);
+      }
     });
     Object.keys(this.data).forEach((i) => {
       for (let d of this.data[i]) {
@@ -265,7 +293,11 @@ class D3M {
 
   remove(obj) {
     let id = obj._groups[0][0].id;
+    let tagName = obj._groups[0][0].tagName;
     obj.remove();
+    if (tagName === "text") {
+      d3.select(`#${id}-background`).remove();
+    }
     Object.keys(this.data).forEach((i) => {
       let temp = this.data[i].filter((e) => e.id !== id);
       this.data[i] = temp;
@@ -273,7 +305,11 @@ class D3M {
   }
 
   removeHtml(id) {
+    let $el = document.getElementById(id);
     d3.select(`#${id}`).remove();
+    if ($el.tagName === "text") {
+      d3.select(`#${id}-background`).remove();
+    }
     Object.keys(this.data).forEach((i) => {
       let temp = this.data[i].filter((e) => e.id !== id);
       this.data[i] = temp;
