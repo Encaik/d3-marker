@@ -98,7 +98,7 @@ class D3M {
         }
       }
     } else {
-      return this.data;
+      return { ...this.data };
     }
   }
 
@@ -126,9 +126,13 @@ class D3M {
       typeof options.group === "undefined"
         ? this.defRectStyle && this.defRectStyle.group
           ? d3.select(`#${this.defRectStyle.group}`)
+            ? d3.select(`#${this.defRectStyle.group}`)
+            : this.svg
           : this.svg
         : typeof options.group === "string"
         ? d3.select(`#${options.group}`)
+          ? d3.select(`#${options.group}`)
+          : this.svg
         : options.group;
     options.width =
       typeof options.width === "undefined"
@@ -214,9 +218,13 @@ class D3M {
       typeof options.group === "undefined"
         ? this.defTextStyle && this.defTextStyle.group
           ? d3.select(`#${this.defTextStyle.group}`)
+            ? d3.select(`#${this.defTextStyle.group}`)
+            : this.svg
           : this.svg
         : typeof options.group === "string"
         ? d3.select(`#${options.group}`)
+          ? d3.select(`#${options.group}`)
+          : this.svg
         : options.group;
     options.fill =
       typeof options.fill === "undefined"
@@ -359,6 +367,12 @@ class D3M {
     d3.selectAll("rect").remove();
     d3.selectAll("text").remove();
     d3.selectAll("g").remove();
+    Object.keys(this.data).forEach((i) => {
+      this.data[i] = [];
+    });
+    Object.keys(this.count).forEach((i) => {
+      this.count[i] = 0;
+    });
   }
 
   //----------------------------滚轮缩放----------------------------
