@@ -251,14 +251,6 @@ class D3M {
     this.count.text++;
     options.id =
       typeof options.id === "undefined" ? `text${this.count.text}` : options.id;
-    let obj = options.group
-      .append("text")
-      .text(options.text)
-      .attr("x", options.x + 5)
-      .attr("y", options.y + 17)
-      .attr("fill", options.fill)
-      .attr("id", options.id)
-      .style("user-select", "none");
     if (options.background) {
       options.group
         .append("rect")
@@ -269,6 +261,14 @@ class D3M {
         .attr("fill", options.background)
         .attr("id", `${options.id}-background`);
     }
+    let obj = options.group
+      .append("text")
+      .text(options.text)
+      .attr("x", options.x + 5)
+      .attr("y", options.y + 17)
+      .attr("fill", options.fill)
+      .attr("id", options.id)
+      .style("user-select", "none");
     this.data.text.push(options);
     return obj;
   }
