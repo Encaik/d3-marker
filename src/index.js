@@ -355,6 +355,12 @@ class D3M {
     });
   }
 
+  removeAll() {
+    d3.selectAll("rect").remove();
+    d3.selectAll("text").remove();
+    d3.selectAll("g").remove();
+  }
+
   //----------------------------滚轮缩放----------------------------
 
   /**
